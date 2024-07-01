@@ -31,6 +31,8 @@ model Article {
   updatedAt   DateTime @updatedAt
   belongsToId String
   belongsTo   User     @relation(fields: [belongsToId], references: [id])
+
+  @@unique([id, belongsToId])
 }
 
 model AuthCredential {

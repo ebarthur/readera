@@ -26,6 +26,7 @@
 		"express-validator": "^7.1.0",
 		"jsonwebtoken": "^9.0.2",
 		"morgan": "^1.10.0",
-		"nodemon": "^3.1.4"
+		"nodemon": "^3.1.4",
+		"resend": "^3.4.0"
 	}
 }

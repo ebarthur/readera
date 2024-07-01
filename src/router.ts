@@ -1,13 +1,53 @@
 import { Router } from "express";
-import { GetArticle } from "./handlers/article";
+import { body } from "express-validator";
+import {
+	CreateArticle,
+	DeleteArticle,
+	EditArticle,
+	GetArticles,
+	GetOneArticle,
+} from "./handlers/article";
+import { CreateDraft, GetDrafts, PublishDraft } from "./handlers/draft";
 import handleInputErrors from "./modules/middleware";
 
 const router = Router();
 
-router.get("/article", GetArticle);
-router.get("/article/:id", () => {});
-router.put("/article/:id", () => {});
-router.post("/article", () => {});
-router.delete("/article/id", () => {});
+/*
+ * Articles
+ */
+router.get("/article", GetArticles);
+router.get("/article/:id", GetOneArticle);
+router.patch(
+	"/article/:id",
+	handleInputErrors,
+	body("title").optional(),
+	body("description").optional(),
+	body("body").optional(),
+	EditArticle,
+);
+router.post(
+	"/article",
+	handleInputErrors,
+	body("title").isString(),
+	body("description").optional(),
+	body("body").isString(),
+	CreateArticle,
+);
+router.delete("/article/:id", DeleteArticle);
+
+/*
+ * Drafts
+ */
+router.get("/draft", GetDrafts);
+router.post(
+	"/draft",
+	handleInputErrors,
+	body("title").isString(),
+	body("description").optional(),
+	body("body").isString(),
+	CreateDraft,
+);
+router.patch("/draft/:id", PublishDraft);
+router.delete("/draft/:id", () => {});
 
 export default router;
