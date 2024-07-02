@@ -7,10 +7,16 @@ export const protect = async (
 	next: NextFunction,
 ) => {
 	// get cookie from header
-	const [_, token] = req.headers.cookie.split("=");
+	const { cookie } = req.headers;
+
+	if (!cookie) {
+		return res.status(401).json({ message: "unauthorized" });
+	}
+
+	const [_, token] = cookie.split("=");
 
 	if (!token) {
-		return res.status(400).json({
+		return res.status(401).json({
 			message: "unauthorized",
 		});
 	}
@@ -20,8 +26,6 @@ export const protect = async (
 		req.user = jwt.verify(token, process.env.JWT_SECRET);
 		next();
 	} catch (error) {
-		res.status(401);
-		res.json({ message: "not valid token" });
-		return;
+		return res.status(401).json({ message: "not valid token" });
 	}
 };

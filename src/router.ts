@@ -7,7 +7,12 @@ import {
 	GetArticles,
 	GetOneArticle,
 } from "./handlers/article";
-import { CreateDraft, GetDrafts, PublishDraft } from "./handlers/draft";
+import {
+	CreateDraft,
+	GetDrafts,
+	GetOneDraft,
+	PublishDraft,
+} from "./handlers/draft";
 import handleInputErrors from "./modules/middleware";
 
 const router = Router();
@@ -39,6 +44,7 @@ router.delete("/article/:id", DeleteArticle);
  * Drafts
  */
 router.get("/draft", GetDrafts);
+router.get("/draft/:id", GetOneDraft);
 router.post(
 	"/draft",
 	handleInputErrors,

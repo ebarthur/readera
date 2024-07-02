@@ -5,11 +5,7 @@ import prisma from "../db";
 import { comparePasswords, createJWT, hashPassword } from "../lib/jwt.server";
 import { sendEmailVerification } from "../modules/email";
 
-export const createUser = async (
-	req: Request,
-	res: Response,
-	next: NextFunction,
-) => {
+export const createUser = async (req: Request, res: Response) => {
 	let user: User;
 	try {
 		// create user with credentials provided
@@ -106,6 +102,6 @@ export const Login = async (
 	});
 
 	return res.status(200).json({
-		message: "Login successful",
+		message: "login successful",
 	});
 };

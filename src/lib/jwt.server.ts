@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 const ROUNDS = +process.env.SALT_ROUNDS || 7;

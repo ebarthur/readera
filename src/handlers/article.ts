@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { Request, Response } from "express";
 import prisma from "../db";
 
@@ -8,24 +9,37 @@ export const GetArticles = async (req: Request, res: Response) => {
 		where: { id: req.user.id },
 		include: { articles: true },
 	});
-
 	res.json({ data: user.articles });
 };
 
 // @POST /api/v1/article
 // Create an article
 export const CreateArticle = async (req: Request, res: Response) => {
-	const article = await prisma.article.create({
-		data: {
-			title: req.body.title,
-			description: req.body.description,
-			body: req.body.body,
-			published: true,
-			belongsToId: req.user.id,
-		},
-	});
+	try {
+		const article = await prisma.article.create({
+			data: {
+				title: req.body.title,
+				description: req.body.description,
+				body: req.body.body,
+				published: true,
+				belongsToId: req.user.id,
+			},
+		});
 
-	res.json({ data: article });
+		res.json({ data: article });
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientValidationError) {
+			return res.status(400).json({ message: "invalid fields" });
+		}
+
+		if (error.code === "P2002") {
+			return res.status(400).json({
+				message: `An article with the title "${req.body.title}" already exists.`,
+			});
+		}
+
+		return res.status(500).json({ message: "Internal server error" });
+	}
 };
 
 // @GET /article/:id

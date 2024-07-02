@@ -30,6 +30,22 @@ export const GetDrafts = async (req: Request, res: Response) => {
 	res.json({ data: drafts });
 };
 
+// @GET /draft/:id
+// Get one draft
+export const GetOneDraft = async (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const draft = await prisma.article.findFirst({
+		where: {
+			id,
+			belongsToId: req.user.id,
+			published: false,
+		},
+	});
+
+	res.json({ data: draft });
+};
+
 // @PATCH /draft/:id
 // Move draft to published
 export const PublishDraft = async (req: Request, res: Response) => {
