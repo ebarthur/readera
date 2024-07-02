@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { Request, Response } from "express";
 import prisma from "../db";
 
@@ -64,13 +65,20 @@ export const PublishDraft = async (req: Request, res: Response) => {
 // @DELETE /draft/:id
 // Delete draft from db
 export const DeleteDraft = async (req: Request, res: Response) => {
-	await prisma.article.delete({
-		where: {
-			id: req.params.id,
-			belongsToId: req.user.id,
-			published: false,
-		},
-	});
-
-	res.json({ message: "draft deleted successfully" });
+	const { id } = req.params;
+	try {
+		await prisma.article.delete({
+			where: {
+				id,
+				belongsToId: req.user.id,
+				published: false,
+			},
+		});
+		res.status(200).json({ message: "Draft deleted successfully" });
+	} catch (error) {
+		console.log(error);
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			return res.status(400).json({ message: "an error occurred" });
+		}
+	}
 };

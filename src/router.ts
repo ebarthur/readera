@@ -9,6 +9,7 @@ import {
 } from "./handlers/article";
 import {
 	CreateDraft,
+	DeleteDraft,
 	GetDrafts,
 	GetOneDraft,
 	PublishDraft,
@@ -54,6 +55,6 @@ router.post(
 	CreateDraft,
 );
 router.patch("/draft/:id", PublishDraft);
-router.delete("/draft/:id", () => {});
+router.delete("/draft/:id", DeleteDraft);
 
 export default router;
