@@ -76,7 +76,6 @@ export const DeleteDraft = async (req: Request, res: Response) => {
 		});
 		res.status(200).json({ message: "Draft deleted successfully" });
 	} catch (error) {
-		console.log(error);
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			return res.status(400).json({ message: "an error occurred" });
 		}

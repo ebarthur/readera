@@ -13,6 +13,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req: Request, res: Response, next: NextFunction) => {
+	next(new Error("something strange happened!"));
+});
+
 app.get("/ping", (req: Request, res: Response) => {
 	res.status(200).json({ message: "pong" });
 });
@@ -22,5 +26,14 @@ app.use("/api/v1", protect, router);
 app.post("/auth/signup", createUser);
 app.post("/auth/login", Login);
 app.get("/auth/logout", LogOut);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+	res.status(500).json({
+		error:
+			"oops, the worst happened! " +
+			"this is strange; our teams are working hard to" +
+			" bring back this service. Hold on tight.",
+	});
+});
 
 export default app;

@@ -77,13 +77,17 @@ export const EditArticle = async (req: Request, res: Response) => {
 
 // @DELETE /article:id
 // Delete an article from the db
-export const DeleteArticle = async (req: Request, res: Response) => {
-	await prisma.article.delete({
-		where: {
-			id: req.params.id,
-			belongsToId: req.user.id,
-		},
-	});
+export const DeleteArticle = async (req: Request, res: Response, next) => {
+	try {
+		const del = await prisma.article.delete({
+			where: {
+				id: req.params.id,
+				belongsToId: req.user.id,
+			},
+		});
 
-	res.json({ message: "article deleted successfully" });
+		res.status(200).json({ message: "article deleted successfully" });
+	} catch (error) {
+		next(error);
+	}
 };
