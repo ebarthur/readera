@@ -105,3 +105,10 @@ export const Login = async (
 		message: "login successful",
 	});
 };
+
+export const LogOut = async (req: Request, res: Response) => {
+	res.clearCookie("auth");
+	return res.status(200).json({
+		message: "logout successful",
+	});
+};

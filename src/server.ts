@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
-import { Login, createUser } from "./handlers/user";
+import { LogOut, Login, createUser } from "./handlers/user";
 import { protect } from "./modules/auth";
 import router from "./router";
 
@@ -21,5 +21,6 @@ app.use("/api/v1", protect, router);
 
 app.post("/auth/signup", createUser);
 app.post("/auth/login", Login);
+app.get("/auth/logout", LogOut);
 
 export default app;
