@@ -9,6 +9,7 @@ export const allArticles = async (
 ) => {
 	try {
 		const articles = await prisma.article.findMany({
+			where: { published: true },
 			orderBy: {
 				createdAt: "desc",
 			},
