@@ -19,7 +19,7 @@ import handleInputErrors from "./modules/middleware";
 const router = Router();
 
 /*
- * Articles
+ * Articles // Specific to a particular user
  */
 router.get("/article", GetArticles);
 router.get("/article/:id", GetOneArticle);
